@@ -169,11 +169,20 @@
 			// Left face
 			 0.0,  1.0,  0.0,
 			-1.0, -1.0, -1.0,
-			-1.0, -1.0,  1.0
+			-1.0, -1.0,  1.0,
+			// Bottom tile one
+			1.0, -1.0,  1.0,
+		   -1.0, -1.0,  1.0,
+			1.0, -1.0, -1.0,
+			// Bottom tile two
+			-1.0, -1.0, -1.0,
+			-1.0, -1.0,  1.0,
+			1.0, -1.0, -1.0
+			
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         pyramidVertexPositionBuffer.itemSize = 3;
-        pyramidVertexPositionBuffer.numItems = 12;
+        pyramidVertexPositionBuffer.numItems = 18;
 		
 		pyramidVertexColorBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexColorBuffer);
@@ -193,35 +202,19 @@
 			// Left face
 			1.0, 0.0, 0.0, 1.0,
 			0.0, 0.0, 1.0, 1.0,
-			0.0, 1.0, 0.0, 1.0
+			0.0, 1.0, 0.0, 1.0,
+			// Bottom tile two
+			1.0, 1.0, 1.0, 1.0,
+			0.0, 0.0, 0.0, 1.0,
+			0.0, 0.0, 0.0, 1.0,
+			// Bottom tile one
+			0.0, 0.0, 0.0, 1.0,
+			1.0, 1.0, 1.0, 1.0,
+			1.0, 1.0, 1.0, 1.0
 		];
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 		pyramidVertexColorBuffer.itemSize = 4;
-		pyramidVertexColorBuffer.numItems = 13;
-
-        squareVertexPositionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
-        vertices = [
-             // Front face
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        // Right face
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        // Back face
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        // Left face
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        0.0, 1.0, 0.0, 1.0
-    ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-    pyramidVertexColorBuffer.itemSize = 4;
-    pyramidVertexColorBuffer.numItems = 12;
+		pyramidVertexColorBuffer.numItems = 18;
 
     cubeVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
