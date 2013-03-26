@@ -6,6 +6,11 @@ function Scene(sceneOrigin, width, height)
 	{
 		this.Objects.push(obj);
 	}
+	
+	this.removeObject = function removeObject()
+	{
+		delete this.Objects.pop();
+	}
 
 	this.render = function render()
 	{
@@ -37,6 +42,7 @@ function Scene(sceneOrigin, width, height)
 	
 		var square = new Square(1,1);
 		scene.addObject(square);
+
 	}
 	
 }
