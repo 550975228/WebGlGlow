@@ -21,6 +21,14 @@ function Scene(sceneOrigin, width, height)
 			this.Objects[i].render();
 		}
 	}
+	
+	this.update = function update()
+	{
+		for (var i=0; i < this.Objects.length; ++i)
+		{
+			this.Objects[i].update();
+		}
+	}
 
 	this.initScene = function initScene()
 	{

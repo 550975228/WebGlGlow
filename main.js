@@ -14,25 +14,18 @@ var gl;
             alert("Could not initialise WebGL, sorry :-(");
         }
     }
-	
-	var lastTime = 0;
-
-    function animate() 
+	function degToRad(degrees) 
 	{
-        var timeNow = new Date().getTime();
-        if (lastTime != 0) 
-		{
-            var elapsed = timeNow - lastTime;
-
-        
-        }
-        lastTime = timeNow;
+        return degrees * Math.PI / 180;
     }
-
-
+	
+	var timeNow = new Date().getTime();
+	
     function tick() 
 	{
 		var color = document.getElementById("Color").checked;
+		
+		timeNow = new Date().getTime();
 		
 		if(color)
 		compileShaders("color-vs","color-fs");
@@ -41,7 +34,8 @@ var gl;
 		
         requestAnimFrame(tick);
         scene.render();
-        animate();
+        scene.update();
+		lastTime = timeNow;
     }
 	
 	  function webGLStart() 
