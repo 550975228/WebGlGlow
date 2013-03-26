@@ -43,10 +43,10 @@
 
     var shaderProgram;
 
-    function initShaders() 
+    function compileShaders(vertexShaderName, fragmentShaderName) 
 	{
-        var fragmentShader = getShader(gl, "standart-fs");
-        var vertexShader = getShader(gl, "standart-vs");
+        var fragmentShader = getShader(gl, fragmentShaderName);
+        var vertexShader = getShader(gl, vertexShaderName);
 
         shaderProgram = gl.createProgram();
         gl.attachShader(shaderProgram, vertexShader);
@@ -68,6 +68,8 @@
 
         shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+		
+		return shaderProgram;
     }
 
 
