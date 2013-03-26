@@ -25,44 +25,29 @@ function createIndexBuffer(indicesArray)
 
 function Triangle(width, height)
 {
-	//this.Geometry = new TriangleGeometry();
-	//this.Geometry.create(width, height);
-	this.VertexPositionBuffer;
+	this.Geometry = new TriangleGeometry();
+	this.Geometry.create(width, height);
+	this.VertexPositionBuffer = createVertexBuffer(this.Geometry.vertices, 3);
+
+}
+
+function Square(width, height)
+{
+	this.Geometry = new SquareGeometry();
+	this.Geometry.create(width, height);
+	this.VertexPositionBuffer = createVertexBuffer(this.Geometry.vertices, 3);
+
 }
 
 var triangle;
+var square;
+
 var squareVertexPositionBuffer;
 
 function initBuffers() 
 {
 	triangle = new Triangle(1,1);
-	
-    triangle.VertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, triangle.VertexPositionBuffer);
-    var vertices = 
-	[
-        0.0,  1.0,  0.0,
-        -1.0, -1.0,  0.0,
-        1.0, -1.0,  0.0
-    ];
-	
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    triangle.VertexPositionBuffer.itemSize = 3;
-    triangle.VertexPositionBuffer.numItems = 3;
-
-    squareVertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
-    vertices = 
-	[
-        1.0,  1.0,  0.0,
-        -1.0,  1.0,  0.0,
-        1.0, -1.0,  0.0,
-        -1.0, -1.0,  0.0
-    ];
-	
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    squareVertexPositionBuffer.itemSize = 3;
-    squareVertexPositionBuffer.numItems = 4;
+	square = new Square(1,1);
 }
 	
 function drawScene() 
@@ -82,8 +67,8 @@ function drawScene()
 
 
     mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
-    gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, square.VertexPositionBuffer);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, square.VertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
     setMatrixUniforms();
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, square.VertexPositionBuffer.numItems);
 }

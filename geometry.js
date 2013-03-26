@@ -4,7 +4,7 @@ function SquareGeometry()
 
     this.create = function create(width, height)
          {
-             var size = { x: width/2, y: height/2 };
+             var size = { x: width, y: height };
 
              this.vertices = [
                   size.x,  size.y,  0.0,
@@ -21,12 +21,13 @@ function TriangleGeometry()
 	
 	this.create = function create(width, height)
          {
-             var size = { x: width/2, y: height/2 };
+             var size = { x: width, y: height };
 
              this.vertices = [
-                  size.x,  size.y,  0.0,
-                  size.x, -size.y,  0.0,
-                 -size.x, -size.y,  0.0
+                  size.x,  -size.y,  0.0,
+                 -size.x, -size.y,  0.0,
+				0, size.y,  0.0
+				  
                  ];
 
          }
