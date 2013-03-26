@@ -9,11 +9,8 @@
 <script type="text/javascript" src="scene.js"></script>
 <script type="text/javascript" src="shaders.js"></script>
 <script type="text/javascript" src="geometry.js"></script>
-<script type="text/javascript" src="vector3.js"></script>
-<script type="text/javascript" src="quaternion.js"></script>
-<script type="text/javascript" src="matrix4.js"></script>
 
-<script id="shader-fs" type="x-shader/x-fragment">
+<script id="standart-fs" type="x-shader/x-fragment">
     precision mediump float;
 
     void main(void) 
@@ -22,27 +19,59 @@
     }
 </script>
 
-<script id="shader-vs" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
+<script id="standart-vs" type="x-shader/x-vertex">
 
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
+  attribute vec3 aVertexPosition;
 
-    void main(void) 
-	{
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-    }
+  uniform mat4 uMVMatrix;
+  uniform mat4 uPMatrix;
+
+  void main(void) 
+  {
+    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+  }
+</script>
+
+<script id="color-fs" type="x-shader/x-fragment">
+
+  precision mediump float;
+
+  varying vec4 vColor;
+
+  void main(void) 
+  {
+    gl_FragColor = vColor;
+  }
+</script>
+
+<script id="color-vs" type="x-shader/x-vertex">
+
+  attribute vec3 aVertexPosition;
+  attribute vec4 aVertexColor;
+
+  uniform mat4 uMVMatrix;
+  uniform mat4 uPMatrix;
+
+  varying vec4 vColor;
+
+  void main(void) 
+  {
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+	vColor = aVertexColor;
+  }
+  
 </script>
 
 <script type="text/javascript" src="main.js"></script>
 
 </head>
 
-
 <body onload="webGLStart();">
    
 	<div id="stage" align="center";>
 		<canvas id="canvas" style="border: none;" width="1200" height="800"></canvas>
+		<br/>
+		<input type="checkbox" id="lighting" checked /> Use Color
 	</div>
   
 </body>

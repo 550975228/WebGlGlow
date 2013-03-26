@@ -20,10 +20,10 @@ var gl;
         var canvas = document.getElementById("canvas");
         initGL(canvas);
 		initShaders();
-		initBuffers();
+		initScene();
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
 
-        drawScene();
+        scene.render();
     }
