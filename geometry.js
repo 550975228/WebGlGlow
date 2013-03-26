@@ -1,7 +1,6 @@
 function SquareGeometry()
 {
     this.vertices = [];
-	this.colors = [];
 
     this.create = function create(width, height, color)
          {
@@ -26,7 +25,7 @@ function TriangleGeometry()
 {
 	this.vertices = [];
 	
-	this.create = function create(width, height, color)
+	this.create = function create(width, height, color, rgb)
          {
              var size = { x: width, y: height };
 
@@ -37,11 +36,15 @@ function TriangleGeometry()
 				  
                  ];
 				 
+			if (rgb)
+			this.colors = [ 1.0, 0.0, 0.0, 1.0,0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0,];
+			else
 			this.colors = []
-             for (var i=0; i < 3; i++)
+             for (var i=0; i < 4; i++)
              {
                  this.colors = this.colors.concat(color);
              }
+         
          }
 	
 }

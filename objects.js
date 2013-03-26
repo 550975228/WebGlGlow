@@ -27,7 +27,7 @@ function Triangle(width, height)
 {
 	this.Geometry = new TriangleGeometry();
 	this.Color = [ 1.0, 0.0, 1.0, 1.0 ];
-	this.Geometry.create(width, height, this.Color);
+	this.Geometry.create(width, height, this.Color,true);
 	this.VertexPositionBuffer = createVertexBuffer(this.Geometry.vertices, 3);
 	this.VertexColorBuffer = createVertexBuffer(this.Geometry.colors, 4);
 	this.PrimitiveType = gl.TRIANGLES;
