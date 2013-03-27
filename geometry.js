@@ -13,6 +13,14 @@ function SquareGeometry()
                  -size.x, -size.y,  0.0
                  ];
 				 
+			this.textureCoords = 
+			 [	
+				0.0, 1.0,
+				1.0, 1.0,
+				0.0, 0.0,
+				1.0, 0.0
+			 ];
+				 
 			this.colors = []
              for (var i=0; i < 4; i++)
              {
@@ -24,18 +32,28 @@ function SquareGeometry()
 function TriangleGeometry()
 {
 	this.vertices = [];
+	this.textureCoords = [];
 	
 	this.create = function create(width, height, color, rgb)
          {
              var size = { x: width, y: height };
 
-             this.vertices = [
-                  size.x,  -size.y,  0.0,
-                 -size.x, -size.y,  0.0,
-					   0, size.y,  0.0
+             this.vertices = 
+			 [
+			 
+                size.x,  -size.y,  0.0,
+                -size.x, -size.y,  0.0,
+				0, size.y,  0.0
 				  
-                 ];
-				 
+             ];
+			 
+			 this.textureCoords = 
+			 [
+				-1.0, 0.0,
+				-1.0, 1.0,
+				 0.0, 0.5
+			 ];
+				
 			if (rgb)
 			this.colors = [ 1.0, 0.0, 0.0, 1.0,0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0,];
 			else
@@ -129,7 +147,9 @@ function CubeGeometry()
 					 16, 17, 18,   16, 18, 19, // Right face
 					 20, 21, 22,   20, 22, 23  // Left face		
 				 ]
-			this.textureCoords = [	   
+				 
+				this.textureCoords = 
+				[	   
 			
 				  0.0, 0.0,
 				  1.0, 0.0,
@@ -280,6 +300,39 @@ function PyramidGeometry()
 				  -size.x, -size.y,   size.z,
 				 
             ];
+			
+			this.textureCoords = 
+			[	   
+				
+				  0.0, 0.0,
+				  0.5, 1.0,
+				 -0.5, 1.0,
+				
+				 // Back face
+				 0.0, 0.0,
+				  0.5, 1.0,
+				 -0.5, 1.0,
+
+				  // Top face
+				 0.0, 0.0,
+				  0.5, 1.0,
+				 -0.5, 1.0,
+
+				  // Bottom face
+				  0.0, 0.0,
+				  0.5, 1.0,
+				 -0.5, 1.0,
+
+				  // Right face
+				  0.0, 0.0,
+				  0.5, 1.0,
+				 -0.5, 1.0,
+
+				  // Left face
+				   0.0, 0.0,
+				  0.5, 1.0,
+				 -0.5, 1.0
+			];
 
             this.colors = [
 			 // Front face

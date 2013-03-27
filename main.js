@@ -35,51 +35,96 @@ var gl;
 	var real3DOn = false;
 	var textureOn = false;
 	var colorOn = false;
+	var animateOn= false;
+	
+	function checkColorBox()
+	{
+		var colorbox = document.getElementById("Color").checked;
+		
+		if(colorbox==true && colorOn == false )
+		{
+			if(textureOn)
+			{
+				
+				document.getElementById("Infobox").value = "Uncheck the 'Textures & Color'! ";
+				colorbox = document.getElementById("Color").checked= false;
+			}
+			else
+			{
+				document.getElementById("Infobox").value = "Color ON!";
+				colorOn = true;
+				compileShaders("color-vs","color-fs");
+				textureOn = false;
+			}
+		}
+		else if(colorbox==false && colorOn == true )
+		{
+			document.getElementById("Infobox").value = "Color OFF!";
+			colorOn = false;
+			compileShaders("standart-vs","standart-fs");
+			checkTextureBox()
+		}
+	}
+	
+	
+	function checkTextureBox()
+	{
+		var textureBox = document.getElementById("Texture").checked;
+		
+		if(textureBox==true && textureOn == false )
+		{
+			document.getElementById("Infobox").value = "Textures ON!";
+			textureOn = true;
+			compileShaders("texture-vs","texture-fs");
+			colorOn = false;
+			colorbox = document.getElementById("Color").checked= false;
+		}
+		else if(textureBox==false && textureOn == true )
+		{
+			document.getElementById("Infobox").value = "Textures OFF!";
+			textureOn = false;
+			compileShaders("standart-vs","standart-fs");
+		}
+	}
+	
+		function checkAnimateBox()
+	{
+		var animateBox = document.getElementById("Animate").checked;
+		
+		if(animateBox==true && animateOn == false )
+		{
+			document.getElementById("Infobox").value = "Animation ON!";
+			animateOn = true;
+		}
+		else if(animateBox==false && animateOn == true )
+		{
+			document.getElementById("Infobox").value = "Animation OFF!";
+			animateOn = false;
+		}
+	}
 	
 	function checkBoxes()
 	{
 	
-		var colorbox = document.getElementById("Color").checked;
 		var real3D = document.getElementById("Real3D").checked;
-		var textureBox = document.getElementById("Texture").checked;
 		
-		if(colorbox==true && colorOn == false )
-		{
-			console.log("Color ON");
-			colorOn = true;
-			compileShaders("color-vs","color-fs");
-		}
-		else if(colorbox==false && colorOn == true )
-		{
-			console.log("Color OFF");
-			colorOn = false;
-			compileShaders("standart-vs","standart-fs");
-		}
-		
-		if(textureBox == true && textureOn == false )
-		{
-			console.log("Texture ON");
-			textureOn = true;
-		}
-		else if(textureBox == false && textureOn == true )
-		{
-			console.log("Texture OFF");
-			textureOn = false;
-		}
+		checkColorBox();
+		checkTextureBox();
+		checkAnimateBox();
 		
 		if (real3D ==true && real3DOn == false )
 		{
-			console.log("3dON");
+			document.getElementById("Infobox").value = "3D ON!";
 			real3DOn = true;
 			activate3D();
 		}
 		else if( real3D ==false && real3DOn == true)
 		{	
+			document.getElementById("Infobox").value = "3D OFF!";
 			console.log("3dOFF");
 			real3DOn = false;
 			deactivate3D();
 		}
-			
 	}
 
 	function activate3D()
@@ -107,6 +152,9 @@ var gl;
 
 	}
 	
+	var textureManager;
+	var shaderManager;
+	
 	  function webGLStart() 
 	{
 		var colorbox = document.getElementById("Color").checked;
@@ -116,32 +164,11 @@ var gl;
         var canvas = document.getElementById("canvas");
         initGL(canvas);
 		
-		var textureManager = new TextureManager();
-		var shaderManager = new ShaderManager();
+		textureManager = new TextureManager();
+		shaderManager = new ShaderManager();
 		
-		if(colorbox==true && colorOn == false )
-		{
-			console.log("Color ON");
-			colorON = true;
-			compileShaders("color-vs","color-fs");
-		}
-		else if(colorbox==false && colorOn == true )
-		{
-			console.log("Color OFF");
-			colorON = false;
-			compileShaders("standart-vs","standart-fs");
-		}
-		
-		if(textureBox == true && textureOn == false )
-		{
-			console.log("Texture ON");
-			textureOn = true;
-		}
-		else if(textureBox == false && textureOn == true )
-		{
-			console.log("Texture OFF");
-			textureOn = false;
-		}
+		checkColorBox();
+		checkTextureBox();
 		
 		initScene();
 
