@@ -211,7 +211,7 @@ function drawScene()
 		gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.TextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 		
 		gl.activeTexture(gl.TEXTURE0);
-		gl.bindTexture(gl.TEXTURE_2D, this.Texture );
+		gl.bindTexture(gl.TEXTURE_2D, this.Texture[filter] );
 		
 		gl.uniform1i(shaderProgram.samplerUniform, 0);	
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexPosBuffer);

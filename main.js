@@ -12,6 +12,7 @@ var yRot = 0;
 var ySpeed = 0;
 
 var z = -5.0;
+var filter = 0;
 
 var currentlyPressedKeys = {};
 
@@ -40,6 +41,13 @@ var currentlyPressedKeys = {};
   function handleKeyDown(event) 
   {
     currentlyPressedKeys[event.keyCode] = true;
+	
+	if (String.fromCharCode(event.keyCode) == "F") {
+            filter += 1;
+            if (filter == 3) {
+                filter = 0;
+            }
+        }
   }
   
   function handleKeyUp(event) 
@@ -181,6 +189,7 @@ var currentlyPressedKeys = {};
 				if(scene)
 				scene.reset();
 				
+				filter=0;
 				animateOn = true;
 			
 		}

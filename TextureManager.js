@@ -14,29 +14,48 @@ function TextureManager()
 		
 		else
 		{
-			var texture = gl.createTexture();
-			
-			texture.options = textureOptions;
-			texture.image = new Image();
+			var newImage = new Image();
+			var newTextures = Array();
+
+			for (var i=0; i < 3; i++) 
+			{
+				var texture = gl.createTexture();
+				texture.options = textureOptions;
+				texture.image = newImage;
+				newTextures.push(texture);	
+			}	
 			texture.image.onload = function()
 			{
-				handleLoadedTexture(texture)
+				handleLoadedTexture(newTextures)
 			}
 			
 			texture.image.src = fileName;
 			
-			this.LoadedTextures[fileName] = texture;
-			return texture;
+			this.LoadedTextures[fileName] = newTextures;
+			return newTextures;
 		}
 	}
 	
-	function handleLoadedTexture(texture) 
+	function handleLoadedTexture(textures) 
 	{
-		gl.bindTexture(gl.TEXTURE_2D, texture);
 		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-		gl.bindTexture(gl.TEXTURE_2D, null);
+
+        gl.bindTexture(gl.TEXTURE_2D, textures[0]);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textures[0].image);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+
+        gl.bindTexture(gl.TEXTURE_2D, textures[1]);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textures[1].image);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+        gl.bindTexture(gl.TEXTURE_2D, textures[2]);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textures[2].image);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+        gl.generateMipmap(gl.TEXTURE_2D);
+
+        gl.bindTexture(gl.TEXTURE_2D, null);
 	}
 }
