@@ -38,8 +38,10 @@ var lastTime = 0;
 function Triangle(width, height)
 {
 	this.Geometry = new TriangleGeometry();
-	this.Rotation = 0;
-	this.Axis =[0, 1, 0];
+	this.Rotation = [0,0];
+	this.Axis1 =[1, 0, 0];
+	this.Axis2 =[0, 1, 0];
+	
 	this.Color = [ 1.0, 0.0, 1.0, 1.0 ];
 	
 	this.TextureName = ["pyramid.gif"];
@@ -53,13 +55,15 @@ function Triangle(width, height)
 	
 	this.PrimitiveType = gl.TRIANGLES;
 	this.render = drawScene;
-	this.Translate = [-1.5, 0.0, -7.0];
+	this.Translate = [-1.0, 0.0, -5.0];
 	this.update = function update()
 	{
 		if (lastTime != 0) 
 		{
 			var elapsed = timeNow - lastTime;
-			this.Rotation += (75 * elapsed) / 1000.0;
+			
+			this.Rotation[0] += (xSpeed * elapsed) / 1000.0;
+			this.Rotation[1] += (ySpeed* elapsed) / 1000.0;
 		}
 	}
 }
@@ -67,8 +71,11 @@ function Triangle(width, height)
 function Square(width, height)
 {
 	this.Geometry = new SquareGeometry();
-	this.Rotation = 0;
-	this.Axis =[1, 1, 1];
+	this.Rotation = [0,0];
+	this.Axis1 =[1, 0, 0];
+	this.Axis2 =[0, 1, 0];
+	
+	
 	this.Color = [ 0.0, 1.0, 1.0, 1.0 ];
 	
 	this.TextureName = ["cube.gif"];
@@ -82,13 +89,15 @@ function Square(width, height)
 	
 	this.PrimitiveType = gl.TRIANGLE_STRIP;
 	this.render = drawScene;
-	this.Translate = [3.0, 0.0, 0.0];
+	this.Translate = [3.0, 0.0, -5.0];
 	this.update = function update()
 	{
 		if (lastTime != 0) 
 		{
 			var elapsed = timeNow - lastTime;
-			this.Rotation += (90 * elapsed) / 1000.0;	
+			
+			this.Rotation[0] += (xSpeed * elapsed) / 1000.0;
+			this.Rotation[1] += (ySpeed* elapsed) / 1000.0;
 		}
     }	
 }
@@ -96,8 +105,10 @@ function Square(width, height)
 function Cube(width, height, depth)
 {
 	this.Geometry = new CubeGeometry();
-	this.Rotation = 0;
-	this.Axis =[1, 1, 1];
+	this.Rotation = [0,0];
+	this.Axis1 =[1, 0, 0];
+	this.Axis2 =[0, 1, 0];
+	
 	
 	this.TextureName = ["cube.gif"];
 	this.Texture = textureManager.getTexture("cube.gif");
@@ -111,13 +122,15 @@ function Cube(width, height, depth)
 	this.IndexBuffer = createIndexBuffer(this.Geometry.faces);
 	this.PrimitiveType = gl.TRIANGLES;
 	this.render = drawScene;
-	this.Translate = [3.0, 0.0, 0.0];
+	this.Translate = [3.0, 0.0, -5.0];
 	this.update = function update()
 	{
 		if (lastTime != 0) 
 		{
 			var elapsed = timeNow - lastTime;
-			this.Rotation += (90 * elapsed) / 1000.0;	
+			
+			this.Rotation[0] += (xSpeed * elapsed) / 1000.0;
+			this.Rotation[1] += (ySpeed* elapsed) / 1000.0;
 		}
     }	
 }
@@ -125,8 +138,11 @@ function Cube(width, height, depth)
 function Pyramid(width, height, depth)
 {
 	this.Geometry = new PyramidGeometry();
-	this.Rotation = 0;
-	this.Axis =[0, 1, 0];
+	this.Rotation = [0,0];
+	this.Axis1 =[1, 0, 0];
+	this.Axis2 =[0, 1, 0];
+	
+	
 	this.Color = [ 0.0, 1.0, 1.0, 1.0 ];
 	
 	this.TextureName = ["pyramid.gif"];
@@ -140,14 +156,17 @@ function Pyramid(width, height, depth)
 	
 	this.PrimitiveType = gl.TRIANGLES;
 	this.render = drawScene;
-	this.Translate = [-1.5, 0.0, -7.0];
+	this.Translate = [-1.0, 0.0, -5.0];
 	this.update = function update()
 	{
 		if (lastTime != 0) 
 		{
 			var elapsed = timeNow - lastTime;
-			this.Rotation += (90 * elapsed) / 1000.0;	
+			
+			this.Rotation[0] += (xSpeed * elapsed) / 1000.0;
+			this.Rotation[1] += (ySpeed* elapsed) / 1000.0;
 		}
+		
     }	
 }
 
@@ -162,13 +181,19 @@ function initScene()
 function drawScene() 
 {	
 	var animate = document.getElementById("Animate").checked;
+	var control = document.getElementById("Controls").checked;
+	
+	if (control == true)
+		this.Translate[2] = z;
+		
 	
 	mat4.translate(mvMatrix, this.Translate);
 	mvPushMatrix();
 	
-	if(animate)
+	if(animate == true || control == true)
 	{
-		mat4.rotate(mvMatrix, degToRad(this.Rotation), this.Axis);
+		mat4.rotate(mvMatrix, degToRad(this.Rotation[0]), this.Axis1);
+		mat4.rotate(mvMatrix, degToRad(this.Rotation[1]), this.Axis2);
 	}
 	
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.VertexPositionBuffer);

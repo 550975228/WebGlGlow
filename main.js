@@ -1,4 +1,19 @@
 var gl;
+var real3DOn = false;
+var textureOn = false;
+var colorOn = false;
+var animateOn = false;
+var controlsOn = false;
+
+var xRot = 0;
+var xSpeed = 0;
+
+var yRot = 0;
+var ySpeed = 0;
+
+var z = -5.0;
+
+var currentlyPressedKeys = {};
 
     function initGL(canvas) 
 	{
@@ -21,22 +36,64 @@ var gl;
     }
 	
 	var timeNow = new Date().getTime();
-	
+
+  function handleKeyDown(event) 
+  {
+    currentlyPressedKeys[event.keyCode] = true;
+  }
+  
+  function handleKeyUp(event) 
+  {
+    currentlyPressedKeys[event.keyCode] = false;
+  }
+	function handleKeys() 
+	{
+		if (currentlyPressedKeys[33]) 
+		{
+		  // Page Up
+		  z -= 0.05;
+		}
+		if (currentlyPressedKeys[34]) 
+		{
+		  // Page Down
+		  z += 0.05;
+		}
+		if (currentlyPressedKeys[37]) 
+		{
+		  // Left cursor key
+		  ySpeed -= 1;
+		}
+		if (currentlyPressedKeys[39]) 
+		{
+		  // Right cursor key
+		  ySpeed += 1;
+		}
+		if (currentlyPressedKeys[38]) 
+		{
+		  // Up cursor key
+		  xSpeed -= 1;
+		}
+		if (currentlyPressedKeys[40]) 
+		{
+		  // Down cursor key
+		  xSpeed += 1;
+		}
+  }
+  
     function tick() 
-	
-	{	checkBoxes();
+	{	
+		checkBoxes();
+		
+		if (controlsOn)
+		handleKeys();
+		
 		timeNow = new Date().getTime();
         requestAnimFrame(tick);
         scene.render();
         scene.update();
 		lastTime = timeNow;
     }
-	
-	var real3DOn = false;
-	var textureOn = false;
-	var colorOn = false;
-	var animateOn= false;
-	
+		
 	function checkColorBox()
 	{
 		var colorbox = document.getElementById("Color").checked;
@@ -45,17 +102,14 @@ var gl;
 		{
 			if(textureOn)
 			{
-				
-				document.getElementById("Infobox").value = "Uncheck the 'Textures & Color'! ";
-				colorbox = document.getElementById("Color").checked= false;
+				document.getElementById("Texture").checked= false;
 			}
-			else
-			{
+			
 				document.getElementById("Infobox").value = "Color ON!";
 				colorOn = true;
 				compileShaders("color-vs","color-fs");
 				textureOn = false;
-			}
+			
 		}
 		else if(colorbox==false && colorOn == true )
 		{
@@ -87,14 +141,48 @@ var gl;
 		}
 	}
 	
-		function checkAnimateBox()
+	function checkControlsBox()
+	{
+		var controlsBox = document.getElementById("Controls").checked;
+		
+		if(controlsBox==true && controlsOn == false )
+		{
+			document.getElementById("Infobox").value = "Controls ON!";
+			
+			xSpeed = 0;
+			ySpeed = 0;
+
+			controlsOn = true;
+			animateBox = document.getElementById("Animate").checked = false;
+		}
+		else if(controlsBox==false && controlsOn == true )
+		{
+			document.getElementById("Infobox").value = "Controls OFF!";
+			controlsOn = false;
+		}
+	}
+	
+	function checkAnimateBox()
 	{
 		var animateBox = document.getElementById("Animate").checked;
 		
 		if(animateBox==true && animateOn == false )
 		{
-			document.getElementById("Infobox").value = "Animation ON!";
-			animateOn = true;
+			if (controlsOn == true)
+			{
+				document.getElementById("Controls").checked = false;
+			}
+			
+				document.getElementById("Infobox").value = "Animation ON!";
+				
+				xSpeed = 0;
+				ySpeed = 50;
+				
+				if(scene)
+				scene.reset();
+				
+				animateOn = true;
+			
 		}
 		else if(animateBox==false && animateOn == true )
 		{
@@ -111,6 +199,7 @@ var gl;
 		checkColorBox();
 		checkTextureBox();
 		checkAnimateBox();
+		checkControlsBox();
 		
 		if (real3D ==true && real3DOn == false )
 		{
@@ -174,6 +263,9 @@ var gl;
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
+		
+		document.onkeydown = handleKeyDown;
+		document.onkeyup = handleKeyUp;
 
         tick();
     }

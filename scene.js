@@ -34,6 +34,15 @@ function Scene(sceneOrigin, width, height)
 			this.Objects[i].update();
 		}
 	}
+	
+	this.reset = function reset()
+	{
+		for (var i=0; i < this.Objects.length; ++i)
+		{
+			this.Objects[i].Rotation = [0,0];
+			this.Objects[i].Translate[2] = -5;
+		}
+	}
 
 	this.initScene = function initScene()
 	{
