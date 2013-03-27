@@ -23,9 +23,9 @@ var gl;
 	var timeNow = new Date().getTime();
 	
     function tick() 
-	{
+	
+	{	checkBoxes();
 		timeNow = new Date().getTime();
-		checkBoxes();
         requestAnimFrame(tick);
         scene.render();
         scene.update();
@@ -33,18 +33,39 @@ var gl;
     }
 	
 	var real3DOn = false;
+	var textureOn = false;
+	var colorOn = false;
 	
 	function checkBoxes()
 	{
 	
-		var color = document.getElementById("Color").checked;
+		var colorbox = document.getElementById("Color").checked;
 		var real3D = document.getElementById("Real3D").checked;
+		var textureBox = document.getElementById("Texture").checked;
 		
-		if(color)
-		compileShaders("color-vs","color-fs");
-		else
-		compileShaders("standart-vs","standart-fs");
+		if(colorbox==true && colorOn == false )
+		{
+			console.log("Color ON");
+			colorOn = true;
+			compileShaders("color-vs","color-fs");
+		}
+		else if(colorbox==false && colorOn == true )
+		{
+			console.log("Color OFF");
+			colorOn = false;
+			compileShaders("standart-vs","standart-fs");
+		}
 		
+		if(textureBox == true && textureOn == false )
+		{
+			console.log("Texture ON");
+			textureOn = true;
+		}
+		else if(textureBox == false && textureOn == true )
+		{
+			console.log("Texture OFF");
+			textureOn = false;
+		}
 		
 		if (real3D ==true && real3DOn == false )
 		{
@@ -88,15 +109,39 @@ var gl;
 	
 	  function webGLStart() 
 	{
-		var color = document.getElementById("Color").checked;
+		var colorbox = document.getElementById("Color").checked;
+		
+		var textureBox = document.getElementById("Texture").checked;
 		
         var canvas = document.getElementById("canvas");
         initGL(canvas);
-		if(color)
-		compileShaders("color-vs","color-fs");
-		else
-		compileShaders("standart-vs","standart-fs");
 		
+		var textureManager = new TextureManager();
+		var shaderManager = new ShaderManager();
+		
+		if(colorbox==true && colorOn == false )
+		{
+			console.log("Color ON");
+			colorON = true;
+			compileShaders("color-vs","color-fs");
+		}
+		else if(colorbox==false && colorOn == true )
+		{
+			console.log("Color OFF");
+			colorON = false;
+			compileShaders("standart-vs","standart-fs");
+		}
+		
+		if(textureBox == true && textureOn == false )
+		{
+			console.log("Texture ON");
+			textureOn = true;
+		}
+		else if(textureBox == false && textureOn == true )
+		{
+			console.log("Texture OFF");
+			textureOn = false;
+		}
 		
 		initScene();
 
