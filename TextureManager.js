@@ -1,7 +1,7 @@
 
 
 function TextureManager()
-{
+{	
 	this.LoadedTextures ={};
 	
 	this.getTexture = function loadTexture(fileName, textureOptions, forceReload)
@@ -34,6 +34,7 @@ function TextureManager()
 			this.LoadedTextures[fileName] = newTextures;
 			return newTextures;
 		}
+
 	}
 	
 	function handleLoadedTexture(textures) 

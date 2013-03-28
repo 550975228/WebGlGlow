@@ -4,6 +4,7 @@ var textureOn = false;
 var colorOn = false;
 var animateOn = false;
 var controlsOn = false;
+var LightOn = false;
 
 var xRot = 0;
 var xSpeed = 0;
@@ -37,56 +38,6 @@ var currentlyPressedKeys = {};
     }
 	
 	var timeNow = new Date().getTime();
-
-  function handleKeyDown(event) 
-  {
-    currentlyPressedKeys[event.keyCode] = true;
-	
-	if (String.fromCharCode(event.keyCode) == "F") {
-            filter += 1;
-            if (filter == 3) {
-                filter = 0;
-            }
-        }
-  }
-  
-  function handleKeyUp(event) 
-  {
-    currentlyPressedKeys[event.keyCode] = false;
-  }
-	function handleKeys() 
-	{
-		if (currentlyPressedKeys[33]) 
-		{
-		  // Page Up
-		  z -= 0.05;
-		}
-		if (currentlyPressedKeys[34]) 
-		{
-		  // Page Down
-		  z += 0.05;
-		}
-		if (currentlyPressedKeys[37]) 
-		{
-		  // Left cursor key
-		  ySpeed -= 1;
-		}
-		if (currentlyPressedKeys[39]) 
-		{
-		  // Right cursor key
-		  ySpeed += 1;
-		}
-		if (currentlyPressedKeys[38]) 
-		{
-		  // Up cursor key
-		  xSpeed -= 1;
-		}
-		if (currentlyPressedKeys[40]) 
-		{
-		  // Down cursor key
-		  xSpeed += 1;
-		}
-  }
   
     function tick() 
 	{	
@@ -108,9 +59,10 @@ var currentlyPressedKeys = {};
 		
 		if(colorbox==true && colorOn == false )
 		{
-			if(textureOn)
+			if(textureOn ==true || LightOn == true);
 			{
 				document.getElementById("Texture").checked= false;
+				document.getElementById("Light").checked= false;
 			}
 			
 				document.getElementById("Infobox").value = "Color ON!";
@@ -200,6 +152,31 @@ var currentlyPressedKeys = {};
 		}
 	}
 	
+	function checkLightBox()
+	{
+		var lightBox = document.getElementById("Light").checked;
+		
+		if(lightBox==true && LightOn == false )
+		{
+			if (textureOn == true || colorOn == true)
+			{
+				document.getElementById("Color").checked = false;
+				document.getElementById("Texture").checked = true;
+			}
+			
+				document.getElementById("Infobox").value = "Light ON!";
+				scene.addLight();
+				LightOn = true;
+			
+		}
+		else if(lightBox==false && LightOn == true )
+		{
+			document.getElementById("Infobox").value = "Light OFF!";
+			scene.removeLight();
+			LightOn = false;
+		}
+	}
+	
 	function checkBoxes()
 	{
 	
@@ -209,45 +186,53 @@ var currentlyPressedKeys = {};
 		checkTextureBox();
 		checkAnimateBox();
 		checkControlsBox();
+		checkLightBox();
 		
 		if (real3D ==true && real3DOn == false )
 		{
 			document.getElementById("Infobox").value = "3D ON!";
 			real3DOn = true;
 			activate3D();
+			
 		}
 		else if( real3D ==false && real3DOn == true)
 		{	
 			document.getElementById("Infobox").value = "3D OFF!";
-			console.log("3dOFF");
 			real3DOn = false;
 			deactivate3D();
+			
 		}
 	}
 
 	function activate3D()
 	{
-		scene.removeObject();
-		scene.removeObject();
+		//scene.removeLight();
+		scene.empytObjectArray();
 			
 		var pyramid = new Pyramid(1,1,1);
 		scene.addObject(pyramid);
 			
 		var cube = new Cube(1,1,1);
 		scene.addObject(cube);
+		
+		checkLightBox();
+		
 	}
 	
 	function deactivate3D()
 	{
-		scene.removeObject();
-		scene.removeObject();
+		//scene.removeLight();
+		scene.empytObjectArray();
 			
 		var triangle = new Triangle(1,1);
 		scene.addObject(triangle);
 	
 		var square = new Square(1,1);
 		scene.addObject(square);
-
+		
+		checkLightBox();
+		
+	
 	}
 	
 	var textureManager;
@@ -265,16 +250,18 @@ var currentlyPressedKeys = {};
 		textureManager = new TextureManager();
 		shaderManager = new ShaderManager();
 		
-		checkColorBox();
-		checkTextureBox();
 		
 		initScene();
-
+		checkBoxes();
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
 		
+		canvas.onmousedown = handleMouseDown;
 		document.onkeydown = handleKeyDown;
 		document.onkeyup = handleKeyUp;
+		document.onmouseup = handleMouseUp;
+		document.onmousemove = handleMouseMove;
 
-        tick();
+
+        window.setTimeout(tick, 1000);
     }

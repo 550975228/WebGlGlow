@@ -170,6 +170,38 @@ function Pyramid(width, height, depth)
     }	
 }
 
+function Sphere(size)
+{
+	this.Geometry = new SquareGeometry();
+	this.Rotation = [0,0];
+	this.Axis1 =[1, 0, 0];
+	this.Axis2 =[0, 1, 0];
+	this.Light = true;
+	
+	this.TextureName = ["light.gif"];
+	this.Texture = textureManager.getTexture("light.gif");
+	
+	this.Geometry.create(size,1);
+	
+	this.VertexPositionBuffer = createVertexBuffer(this.Geometry.vertices, 3);
+	this.TextureCoordBuffer = createTextureCoordBuffer(this.Geometry.textureCoords,2);
+	
+	this.PrimitiveType = gl.TRIANGLE_STRIP;
+	this.render = drawScene;
+	this.Translate = [-2.0, 3.0, -5.0];
+	this.update = function update()
+	{
+		if (lastTime != 0) 
+		{
+			var elapsed = timeNow - lastTime;
+			
+			this.Translate[0] = (lastMousePos.x/100)-10.35;
+			this.Translate[1] = (-lastMousePos.y/100)+5;
+		}
+		
+    }
+}
+
 var scene;
 
 function initScene() 

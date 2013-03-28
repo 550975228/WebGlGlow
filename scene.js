@@ -11,6 +11,24 @@ function Scene(sceneOrigin, width, height)
 	{
 		delete this.Objects.pop();
 	}
+	
+		this.empytObjectArray = function empytObjectArray()
+	{
+		for (var i=0; i < this.Objects.length; ++i)
+		{
+			if(this.Objects[i].Light !=true)
+			var lightExists = true;
+			
+			delete this.Objects[i];
+		}
+		
+		if(lightExists = true)
+		{
+			var sphere = new Sphere(1);
+			scene.addObject(sphere);
+		}
+	}
+
 
 	this.render = function render()
 	{
@@ -43,6 +61,30 @@ function Scene(sceneOrigin, width, height)
 			this.Objects[i].Translate[2] = -5;
 		}
 	}
+	
+	this.removeLight = function removeLight()
+	{
+		for (var i=0; i < this.Objects.length; ++i)
+		{
+			if(this.Objects[i].Light)
+			this.Objects.splice(i);
+		}
+	}
+	
+	this.addLight = function addLight()
+	{
+		for (var i=0; i < this.Objects.length; ++i)
+		{
+			if(this.Objects[i].Light)
+			var lightExists = true;
+		}
+		
+		if (lightExists != true)
+		{
+			var sphere = new Sphere(1);
+			scene.addObject(sphere);
+		}
+	}
 
 	this.initScene = function initScene()
 	{
@@ -51,6 +93,9 @@ function Scene(sceneOrigin, width, height)
 	
 		var square = new Square(1,1);
 		scene.addObject(square);
+		
+		var sphere = new Sphere(1);
+		scene.addObject(sphere);
 
 	}
 	

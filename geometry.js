@@ -387,5 +387,80 @@ function PyramidGeometry()
 }
 
 
+function SphereGeometry()
+{
+    this.vertices = [];
+    this.Normals = [];
+    this.textureCoords = [];
+
+    this.faces = [];
+
+    // returns the face indices
+    this.getIndexData = function getIndexData()
+         {
+             var indices = [];
+             for (var i=0; i<this.faces.length; ++i)
+             {
+                 indices = indices.concat(this.faces[i]);
+             }
+             return indices;
+         }
+
+    // returns the vertex position data
+    this.getVertexData = function getVertexData()
+         {
+             var verts = [];
+             for (var i=0; i < this.vertices.length; ++i)
+             {
+                 var v = this.vertices[i];
+
+                 verts = verts.concat([v.x, v.y, v.z]);
+             }
+             return verts;
+         }
+
+    this.create = function create(latitudeBands, longitudeBands, radius)
+         {
+             for (var lat=0; lat <= latitudeBands; ++lat)
+             {
+                 var theta = lat * Math.PI / latitudeBands;
+                 var sinTheta = Math.sin(theta);
+                 var cosTheta = Math.cos(theta);
+
+                 for (var lon=0; lon <= longitudeBands; ++lon)
+                 {
+                     var phi = lon * 2.0 * Math.PI / longitudeBands;
+                     var sinPhi = Math.sin(phi);
+                     var cosPhi = Math.cos(phi);
+
+                     var x = cosPhi * sinTheta;
+                     var y = cosTheta;
+                     var z = sinPhi * sinTheta;
+                     var u = 1.0 - (lon / longitudeBands);
+                     var v = 1.0 - (lat / latitudeBands);
+
+                     this.vertices.push(radius * x, radius * y, radius * z);
+
+                     //this.Normals.push(x,y,z);
+                     this.textureCoords.push(u);
+                     this.textureCoords.push(v);
+                 }
+             }
+
+             for (lat=0; lat < latitudeBands; ++lat)
+             {
+                 for (lon=0; lon < longitudeBands; ++lon)
+                 {
+                     var first = (lat * longitudeBands ) + lon;
+                     var second = first + longitudeBands + 1;
+
+                     this.faces.push([first, second, first + 1]);
+                     this.faces.push([second, second + 1, first + 1]);
+                 }
+             }
+         }
+}
+
+
 
 
